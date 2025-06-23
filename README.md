@@ -12,7 +12,7 @@ A fork of [pdfmake](https://github.com/liborm85/pdfmake) with enhanced support f
 ## Installation
 
 ```bash
-npm install pdfmake-khmer
+npm install pdfmake-kh
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ npm install pdfmake-khmer
 Same as original pdfmake, but with improved Khmer text handling:
 
 ```javascript
-const pdfMake = require('pdfmake-khmer');
+const pdfMake = require('pdfmake-kh');
 
 const docDefinition = {
   content: [
