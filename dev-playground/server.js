@@ -20,6 +20,12 @@ function createPdfBinary(pdfDoc, callback) {
 			bold: path.join(__dirname, '..', 'examples', '/fonts/Roboto-Medium.ttf'),
 			italics: path.join(__dirname, '..', 'examples', '/fonts/Roboto-Italic.ttf'),
 			bolditalics: path.join(__dirname, '..', 'examples', '/fonts/Roboto-MediumItalic.ttf')
+		},
+		Battambang: {
+			normal: path.join(__dirname, '..', 'examples', '/fonts/Battambang-Regular.ttf'),
+			bold: path.join(__dirname, '..', 'examples', '/fonts/Battambang-Regular.ttf'),
+			italics: path.join(__dirname, '..', 'examples', '/fonts/Battambang-Regular.ttf'),
+			bolditalics: path.join(__dirname, '..', 'examples', '/fonts/Battambang-Regular.ttf')
 		}
 	};
 

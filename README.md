@@ -1,81 +1,50 @@
-# pdfmake [![Node.js CI][githubactions_img]][githubactions_url] [![GitHub][github_img]][github_url] [![npm][npm_img]][npm_url] [![Bower][bower_img]][bower_url] [![Packagist][packagist_img]][packagist_url] [![CDNJS][cdnjs_img]][cndjs_url]
+# PDFMake with Khmer Language Support
 
-[githubactions_img]: https://github.com/bpampuch/pdfmake/actions/workflows/node.js.yml/badge.svg?branch=0.2
-[githubactions_url]: https://github.com/bpampuch/pdfmake/actions
+A fork of [pdfmake](https://github.com/liborm85/pdfmake) with enhanced support for Khmer language text breaking and word wrapping.
 
-[github_img]: https://img.shields.io/github/release/bpampuch/pdfmake.svg?colorB=0E7FBF
-[github_url]: https://github.com/bpampuch/pdfmake/releases/latest
+## Features
 
-[npm_img]: https://img.shields.io/npm/v/pdfmake.svg?colorB=0E7FBF
-[npm_url]: https://www.npmjs.com/package/pdfmake
+- All original pdfmake functionality
+- Enhanced Khmer text breaking and word wrapping
+- Proper handling of Khmer script line breaks
+- Improved text rendering for Khmer documents
 
-[bower_img]: https://img.shields.io/bower/v/pdfmake.svg?colorB=0E7FBF
-[bower_url]: https://github.com/bpampuch/pdfmake
+## Installation
 
-[packagist_img]: https://img.shields.io/packagist/v/bpampuch/pdfmake.svg?colorB=0E7FBF
-[packagist_url]: https://packagist.org/packages/bpampuch/pdfmake
-
-[cdnjs_img]: https://img.shields.io/cdnjs/v/pdfmake.svg?colorB=0E7FBF
-[cndjs_url]: https://cdnjs.com/libraries/pdfmake
-
-
-PDF document generation library for server-side and client-side usage in pure JavaScript.
-
-Check out [the playground](http://bpampuch.github.io/pdfmake/playground.html) and [examples](https://github.com/bpampuch/pdfmake/tree/0.1/examples).
-
-### Features
-
-* line-wrapping,
-* text-alignments (left, right, centered, justified),
-* numbered and bulleted lists,
-* tables and columns
-  * auto/fixed/star-sized widths,
-  * col-spans and row-spans,
-  * headers automatically repeated in case of a page-break,
-* images and vector graphics,
-* convenient styling and style inheritance,
-* page headers and footers:
-  * static or dynamic content,
-  * access to current page number and page count,
-* background-layer,
-* page dimensions and orientations,
-* margins,
-* custom page breaks,
-* font embedding,
-* support for complex, multi-level (nested) structures,
-* table of contents,
-* helper methods for opening/printing/downloading the generated PDF,
-* setting of PDF metadata (e.g. author, subject).
-
-## Documentation
-
-Documentation URL: https://pdfmake.github.io/docs/
-
-## Building from sources version 0.2.x
-
-using npm:
-```
-git clone --branch 0.2 https://github.com/bpampuch/pdfmake.git
-cd pdfmake
-npm install
-npm run build
+```bash
+npm install pdfmake-khmer
 ```
 
-using yarn:
+## Usage
+
+Same as original pdfmake, but with improved Khmer text handling:
+
+```javascript
+const pdfMake = require('pdfmake-khmer');
+
+const docDefinition = {
+  content: [
+    {
+      text: 'ភាសាខ្មែរគឺជាភាសាផ្លូវការរបស់ព្រះរាជាណាចក្រកម្ពុជា',
+      style: 'khmerText'
+    }
+  ]
+};
+
+pdfMake.createPdf(docDefinition).download();
 ```
-git clone --branch 0.2 https://github.com/bpampuch/pdfmake.git
-cd pdfmake
-yarn
-yarn run build
-```
+
+## Khmer Text Breaking
+
+This fork includes improved word breaking for Khmer text, ensuring proper line wrapping that respects Khmer language rules and maintains readability.
+
+## Credits
+
+- **Original Project**: [pdfmake by liborm85](https://github.com/liborm85/pdfmake)
+- **Khmer Word Splitting Reference**: [split-khmer by seanghay](https://github.com/seanghay/split-khmer)
+
+Special thanks to the original pdfmake team and the split-khmer project for providing the foundation and reference implementation for Khmer text processing.
 
 ## License
-MIT
 
-## Authors
-* [@bpampuch](https://github.com/bpampuch) (founder)
-* [@liborm85](https://github.com/liborm85)
-
-pdfmake is based on a truly amazing library [pdfkit](https://github.com/devongovett/pdfkit) (credits to [@devongovett](https://github.com/devongovett)).
-
-Thanks to all contributors.
+Same as original pdfmake -

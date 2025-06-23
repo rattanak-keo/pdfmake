@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-var isString = require('./helpers').isString;
-var isNumber = require('./helpers').isNumber;
-var isObject = require('./helpers').isObject;
-var isArray = require('./helpers').isArray;
-var isUndefined = require('./helpers').isUndefined;
-var LineBreaker = require('@foliojs-fork/linebreak');
-
+var isString = require("./helpers").isString;
+var isNumber = require("./helpers").isNumber;
+var isObject = require("./helpers").isObject;
+var isArray = require("./helpers").isArray;
+var isUndefined = require("./helpers").isUndefined;
+var LineBreaker = require("@foliojs-fork/linebreak");
+var splitKhmer = require("./khmer-splitter").split;
 var LEADING = /^(\s)+/g;
 var TRAILING = /(\s)+$/g;
 
@@ -36,10 +36,17 @@ TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
 		currentLineWidth;
 
 	measured.forEach(function (inline) {
-		minWidth = Math.max(minWidth, inline.width - inline.leadingCut - inline.trailingCut);
+		minWidth = Math.max(
+			minWidth,
+			inline.width - inline.leadingCut - inline.trailingCut
+		);
 
 		if (!currentLineWidth) {
-			currentLineWidth = { width: 0, leadingCut: inline.leadingCut, trailingCut: 0 };
+			currentLineWidth = {
+				width: 0,
+				leadingCut: inline.leadingCut,
+				trailingCut: 0,
+			};
 		}
 
 		currentLineWidth.width += inline.width;
@@ -52,14 +59,14 @@ TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
 		}
 	});
 
-	if (getStyleProperty({}, styleContextStack, 'noWrap', false)) {
+	if (getStyleProperty({}, styleContextStack, "noWrap", false)) {
 		minWidth = maxWidth;
 	}
 
 	return {
 		items: measured,
 		minWidth: minWidth,
-		maxWidth: maxWidth
+		maxWidth: maxWidth,
 	};
 
 	function getTrimmedWidth(item) {
@@ -74,16 +81,26 @@ TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
  * @return {Object}                   size of the specified string
  */
 TextTools.prototype.sizeOfString = function (text, styleContextStack) {
-	text = text ? text.toString().replace(/\t/g, '    ') : '';
+	text = text ? text.toString().replace(/\t/g, "    ") : "";
 
 	//TODO: refactor - extract from measure
-	var fontName = getStyleProperty({}, styleContextStack, 'font', 'Roboto');
-	var fontSize = getStyleProperty({}, styleContextStack, 'fontSize', 12);
-	var fontFeatures = getStyleProperty({}, styleContextStack, 'fontFeatures', null);
-	var bold = getStyleProperty({}, styleContextStack, 'bold', false);
-	var italics = getStyleProperty({}, styleContextStack, 'italics', false);
-	var lineHeight = getStyleProperty({}, styleContextStack, 'lineHeight', 1);
-	var characterSpacing = getStyleProperty({}, styleContextStack, 'characterSpacing', 0);
+	var fontName = getStyleProperty({}, styleContextStack, "font", "Roboto");
+	var fontSize = getStyleProperty({}, styleContextStack, "fontSize", 12);
+	var fontFeatures = getStyleProperty(
+		{},
+		styleContextStack,
+		"fontFeatures",
+		null
+	);
+	var bold = getStyleProperty({}, styleContextStack, "bold", false);
+	var italics = getStyleProperty({}, styleContextStack, "italics", false);
+	var lineHeight = getStyleProperty({}, styleContextStack, "lineHeight", 1);
+	var characterSpacing = getStyleProperty(
+		{},
+		styleContextStack,
+		"characterSpacing",
+		0
+	);
 
 	var font = this.fontProvider.provideFont(fontName, bold, italics);
 
@@ -92,8 +109,8 @@ TextTools.prototype.sizeOfString = function (text, styleContextStack) {
 		height: font.lineHeight(fontSize) * lineHeight,
 		fontSize: fontSize,
 		lineHeight: lineHeight,
-		ascender: font.ascender / 1000 * fontSize,
-		descender: font.descender / 1000 * fontSize
+		ascender: (font.ascender / 1000) * fontSize,
+		descender: (font.descender / 1000) * fontSize,
 	};
 };
 
@@ -105,37 +122,60 @@ TextTools.prototype.sizeOfString = function (text, styleContextStack) {
  * @param  {object} styleContextStack current style stack
  * @returns {object} size of the specified string
  */
-TextTools.prototype.sizeOfRotatedText = function (text, angle, styleContextStack) {
-	var angleRad = angle * Math.PI / -180;
+TextTools.prototype.sizeOfRotatedText = function (
+	text,
+	angle,
+	styleContextStack
+) {
+	var angleRad = (angle * Math.PI) / -180;
 	var size = this.sizeOfString(text, styleContextStack);
 	return {
-		width: Math.abs(size.height * Math.sin(angleRad)) + Math.abs(size.width * Math.cos(angleRad)),
-		height: Math.abs(size.width * Math.sin(angleRad)) + Math.abs(size.height * Math.cos(angleRad))
+		width:
+			Math.abs(size.height * Math.sin(angleRad)) +
+			Math.abs(size.width * Math.cos(angleRad)),
+		height:
+			Math.abs(size.width * Math.sin(angleRad)) +
+			Math.abs(size.height * Math.cos(angleRad)),
 	};
 };
 
-TextTools.prototype.widthOfString = function (text, font, fontSize, characterSpacing, fontFeatures) {
+TextTools.prototype.widthOfString = function (
+	text,
+	font,
+	fontSize,
+	characterSpacing,
+	fontFeatures
+) {
 	return widthOfString(text, font, fontSize, characterSpacing, fontFeatures);
 };
 
 function splitWords(text, noWrap) {
 	var results = [];
-	text = text.replace(/\t/g, '    ');
+	text = text.replace(/\t/g, "    ");
 
 	if (noWrap) {
 		results.push({ text: text });
 		return results;
 	}
 
+	const isKhmer = /[\u1780-\u17ff]/.test(text);
+	if (isKhmer) {
+		// Use Khmer splitting logic
+		const khmerWords = splitKhmer(text);
+		const words = khmerWords.map((word) => ({ text: word }));
+		return words;
+	}
+
 	var breaker = new LineBreaker(text);
 	var last = 0;
 	var bk;
 
-	while (bk = breaker.nextBreak()) {
+	while ((bk = breaker.nextBreak())) {
 		var word = text.slice(last, bk.position);
 
-		if (bk.required || word.match(/\r?\n$|\r$/)) { // new line
-			word = word.replace(/\r?\n$|\r$/, '');
+		if (bk.required || word.match(/\r?\n$|\r$/)) {
+			// new line
+			word = word.replace(/\r?\n$|\r$/, "");
 			results.push({ text: word, lineEnd: true });
 		} else {
 			results.push({ text: word });
@@ -152,7 +192,7 @@ function copyStyle(source, destination) {
 	source = source || {}; //TODO: default style
 
 	for (var key in source) {
-		if (key != 'text' && source.hasOwnProperty(key)) {
+		if (key != "text" && source.hasOwnProperty(key)) {
 			destination[key] = source[key];
 		}
 	}
@@ -205,7 +245,12 @@ function normalizeTextArray(array, styleContextStack) {
 		var style = null;
 		var words;
 
-		var noWrap = getStyleProperty(item || {}, styleContextStack, 'noWrap', false);
+		var noWrap = getStyleProperty(
+			item || {},
+			styleContextStack,
+			"noWrap",
+			false
+		);
 		if (isObject(item)) {
 			if (item._textRef && item._textRef._textNodeRef.text) {
 				item.text = item._textRef._textNodeRef.text;
@@ -227,7 +272,7 @@ function normalizeTextArray(array, styleContextStack) {
 
 		for (var i2 = 0, l2 = words.length; i2 < l2; i2++) {
 			var result = {
-				text: words[i2].text
+				text: words[i2].text,
 			};
 
 			if (words[i2].lineEnd) {
@@ -250,7 +295,7 @@ function normalizeTextArray(array, styleContextStack) {
 
 function normalizeString(value) {
 	if (value === undefined || value === null) {
-		return '';
+		return "";
 	} else if (isNumber(value)) {
 		return value.toString();
 	} else if (isString(value)) {
@@ -287,7 +332,12 @@ function measure(fontProvider, textArray, styleContextStack) {
 	var normalized = normalizeTextArray(textArray, styleContextStack);
 
 	if (normalized.length) {
-		var leadingIndent = getStyleProperty(normalized[0], styleContextStack, 'leadingIndent', 0);
+		var leadingIndent = getStyleProperty(
+			normalized[0],
+			styleContextStack,
+			"leadingIndent",
+			0
+		);
 
 		if (leadingIndent) {
 			normalized[0].leadingCut = -leadingIndent;
@@ -296,27 +346,77 @@ function measure(fontProvider, textArray, styleContextStack) {
 	}
 
 	normalized.forEach(function (item) {
-		var fontName = getStyleProperty(item, styleContextStack, 'font', 'Roboto');
-		var fontSize = getStyleProperty(item, styleContextStack, 'fontSize', 12);
-		var fontFeatures = getStyleProperty(item, styleContextStack, 'fontFeatures', null);
-		var bold = getStyleProperty(item, styleContextStack, 'bold', false);
-		var italics = getStyleProperty(item, styleContextStack, 'italics', false);
-		var color = getStyleProperty(item, styleContextStack, 'color', 'black');
-		var decoration = getStyleProperty(item, styleContextStack, 'decoration', null);
-		var decorationColor = getStyleProperty(item, styleContextStack, 'decorationColor', null);
-		var decorationStyle = getStyleProperty(item, styleContextStack, 'decorationStyle', null);
-		var background = getStyleProperty(item, styleContextStack, 'background', null);
-		var lineHeight = getStyleProperty(item, styleContextStack, 'lineHeight', 1);
-		var characterSpacing = getStyleProperty(item, styleContextStack, 'characterSpacing', 0);
-		var link = getStyleProperty(item, styleContextStack, 'link', null);
-		var linkToPage = getStyleProperty(item, styleContextStack, 'linkToPage', null);
-		var linkToDestination = getStyleProperty(item, styleContextStack, 'linkToDestination', null);
-		var noWrap = getStyleProperty(item, styleContextStack, 'noWrap', null);
-		var preserveLeadingSpaces = getStyleProperty(item, styleContextStack, 'preserveLeadingSpaces', false);
-		var preserveTrailingSpaces = getStyleProperty(item, styleContextStack, 'preserveTrailingSpaces', false);
-		var opacity = getStyleProperty(item, styleContextStack, 'opacity', 1);
-		var sup = getStyleProperty(item, styleContextStack, 'sup', false);
-		var sub = getStyleProperty(item, styleContextStack, 'sub', false);
+		var fontName = getStyleProperty(item, styleContextStack, "font", "Roboto");
+		var fontSize = getStyleProperty(item, styleContextStack, "fontSize", 12);
+		var fontFeatures = getStyleProperty(
+			item,
+			styleContextStack,
+			"fontFeatures",
+			null
+		);
+		var bold = getStyleProperty(item, styleContextStack, "bold", false);
+		var italics = getStyleProperty(item, styleContextStack, "italics", false);
+		var color = getStyleProperty(item, styleContextStack, "color", "black");
+		var decoration = getStyleProperty(
+			item,
+			styleContextStack,
+			"decoration",
+			null
+		);
+		var decorationColor = getStyleProperty(
+			item,
+			styleContextStack,
+			"decorationColor",
+			null
+		);
+		var decorationStyle = getStyleProperty(
+			item,
+			styleContextStack,
+			"decorationStyle",
+			null
+		);
+		var background = getStyleProperty(
+			item,
+			styleContextStack,
+			"background",
+			null
+		);
+		var lineHeight = getStyleProperty(item, styleContextStack, "lineHeight", 1);
+		var characterSpacing = getStyleProperty(
+			item,
+			styleContextStack,
+			"characterSpacing",
+			0
+		);
+		var link = getStyleProperty(item, styleContextStack, "link", null);
+		var linkToPage = getStyleProperty(
+			item,
+			styleContextStack,
+			"linkToPage",
+			null
+		);
+		var linkToDestination = getStyleProperty(
+			item,
+			styleContextStack,
+			"linkToDestination",
+			null
+		);
+		var noWrap = getStyleProperty(item, styleContextStack, "noWrap", null);
+		var preserveLeadingSpaces = getStyleProperty(
+			item,
+			styleContextStack,
+			"preserveLeadingSpaces",
+			false
+		);
+		var preserveTrailingSpaces = getStyleProperty(
+			item,
+			styleContextStack,
+			"preserveTrailingSpaces",
+			false
+		);
+		var opacity = getStyleProperty(item, styleContextStack, "opacity", 1);
+		var sup = getStyleProperty(item, styleContextStack, "sup", false);
+		var sub = getStyleProperty(item, styleContextStack, "sub", false);
 
 		if ((sup || sub) && item.fontSize === undefined) {
 			// font size reduction taken from here: https://en.wikipedia.org/wiki/Subscript_and_superscript#Desktop_publishing
@@ -325,7 +425,13 @@ function measure(fontProvider, textArray, styleContextStack) {
 
 		var font = fontProvider.provideFont(fontName, bold, italics);
 
-		item.width = widthOfString(item.text, font, fontSize, characterSpacing, fontFeatures);
+		item.width = widthOfString(
+			item.text,
+			font,
+			fontSize,
+			characterSpacing,
+			fontFeatures
+		);
 		item.height = font.lineHeight(fontSize) * lineHeight;
 
 		if (!item.leadingCut) {
@@ -334,17 +440,37 @@ function measure(fontProvider, textArray, styleContextStack) {
 
 		var leadingSpaces;
 		if (!preserveLeadingSpaces && (leadingSpaces = item.text.match(LEADING))) {
-			item.leadingCut += widthOfString(leadingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
+			item.leadingCut += widthOfString(
+				leadingSpaces[0],
+				font,
+				fontSize,
+				characterSpacing,
+				fontFeatures
+			);
 		}
 
 		var trailingSpaces;
-		if (!preserveTrailingSpaces && (trailingSpaces = item.text.match(TRAILING))) {
-			item.trailingCut = widthOfString(trailingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
+		if (
+			!preserveTrailingSpaces &&
+			(trailingSpaces = item.text.match(TRAILING))
+		) {
+			item.trailingCut = widthOfString(
+				trailingSpaces[0],
+				font,
+				fontSize,
+				characterSpacing,
+				fontFeatures
+			);
 		} else {
 			item.trailingCut = 0;
 		}
 
-		item.alignment = getStyleProperty(item, styleContextStack, 'alignment', 'left');
+		item.alignment = getStyleProperty(
+			item,
+			styleContextStack,
+			"alignment",
+			"left"
+		);
 		item.font = font;
 		item.fontSize = fontSize;
 		item.fontFeatures = fontFeatures;
@@ -367,7 +493,10 @@ function measure(fontProvider, textArray, styleContextStack) {
 }
 
 function widthOfString(text, font, fontSize, characterSpacing, fontFeatures) {
-	return font.widthOfString(text, fontSize, fontFeatures) + ((characterSpacing || 0) * (text.length - 1));
+	return (
+		font.widthOfString(text, fontSize, fontFeatures) +
+		(characterSpacing || 0) * (text.length - 1)
+	);
 }
 
 module.exports = TextTools;
