@@ -1,38 +1,49 @@
 import LineBreaker from 'linebreak';
 import { isObject } from './helpers/variableType';
 import StyleContextStack from './StyleContextStack';
-
+import { split as splitKhmer } from './khmer-splitter'; // Adjust path as needed
 /**
  * @param {string} text
  * @param {boolean} noWrap
  * @returns {Array}
  */
 const splitWords = (text, noWrap) => {
-	let words = [];
+    let words = [];
 
-	if (noWrap) {
-		words.push({ text: text });
-		return words;
-	}
+    if (noWrap) {
+        words.push({ text: text });
+        return words;
+    }
 
-	let breaker = new LineBreaker(text);
-	let last = 0;
-	let bk;
+    // Check if text contains Khmer characters
+    const isKhmer = /[\u1780-\u17ff]/.test(text);
+    
+    if (isKhmer) {
+        // Use Khmer splitting logic
+        const khmerWords = splitKhmer(text);
+        words = khmerWords.map(word => ({ text: word }));
+        return words;
+    }
 
-	while ((bk = breaker.nextBreak())) {
-		let word = text.slice(last, bk.position);
+    // Original logic for non-Khmer text
+    let breaker = new LineBreaker(text);
+    let last = 0;
+    let bk;
 
-		if (bk.required || word.match(/\r?\n$|\r$/)) { // new line
-			word = word.replace(/\r?\n$|\r$/, '');
-			words.push({ text: word, lineEnd: true });
-		} else {
-			words.push({ text: word });
-		}
+    while ((bk = breaker.nextBreak())) {
+        let word = text.slice(last, bk.position);
 
-		last = bk.position;
-	}
+        if (bk.required || word.match(/\r?\n$|\r$/)) { // new line
+            word = word.replace(/\r?\n$|\r$/, '');
+            words.push({ text: word, lineEnd: true });
+        } else {
+            words.push({ text: word });
+        }
 
-	return words;
+        last = bk.position;
+    }
+
+    return words;
 };
 
 /**
