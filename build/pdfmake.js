@@ -38318,7 +38318,7 @@ var isFunction = (__webpack_require__(91867).isFunction);
 var isUndefined = (__webpack_require__(91867).isUndefined);
 //var isNull = require('../helpers').isNull;
 var pack = (__webpack_require__(91867).pack);
-var FileSaver = __webpack_require__(60427);
+var FileSaver = __webpack_require__(70206);
 var saveAs = FileSaver.saveAs;
 
 var defaultClientFonts = {
@@ -45490,19 +45490,6 @@ $({ target: 'Object', stat: true }, {
 module.exports = function () {
   throw new Error('Readable.from is not available in the browser')
 };
-
-
-/***/ }),
-
-/***/ 60427:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else // removed by dead control flow
-{}})(this,function(){"use strict";function b(a,b){return"undefined"==typeof b?b={autoBom:!1}:"object"!=typeof b&&(console.warn("Deprecated: Expected third argument to be a object"),b={autoBom:!b}),b.autoBom&&/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a.type)?new Blob(["\uFEFF",a],{type:a.type}):a}function c(a,b,c){var d=new XMLHttpRequest;d.open("GET",a),d.responseType="blob",d.onload=function(){g(d.response,b,c)},d.onerror=function(){console.error("could not download file")},d.send()}function d(a){var b=new XMLHttpRequest;b.open("HEAD",a,!1);try{b.send()}catch(a){}return 200<=b.status&&299>=b.status}function e(a){try{a.dispatchEvent(new MouseEvent("click"))}catch(c){var b=document.createEvent("MouseEvents");b.initMouseEvent("click",!0,!0,window,0,0,0,80,20,!1,!1,!1,!1,0,null),a.dispatchEvent(b)}}var f="object"==typeof window&&window.window===window?window:"object"==typeof self&&self.self===self?self:"object"==typeof __webpack_require__.g&&__webpack_require__.g.global===__webpack_require__.g?__webpack_require__.g:void 0,a=f.navigator&&/Macintosh/.test(navigator.userAgent)&&/AppleWebKit/.test(navigator.userAgent)&&!/Safari/.test(navigator.userAgent),g=f.saveAs||("object"!=typeof window||window!==f?function(){}:(typeof HTMLAnchorElement !== "undefined" && "download" in HTMLAnchorElement.prototype)&&!a?function(b,g,h){var i=f.URL||f.webkitURL,j=document.createElement("a");g=g||b.name||"download",j.download=g,j.rel="noopener","string"==typeof b?(j.href=b,j.origin===location.origin?e(j):d(j.href)?c(b,g,h):e(j,j.target="_blank")):(j.href=i.createObjectURL(b),setTimeout(function(){i.revokeObjectURL(j.href)},4E4),setTimeout(function(){e(j)},0))}:"msSaveOrOpenBlob"in navigator?function(f,g,h){if(g=g||f.name||"download","string"!=typeof f)navigator.msSaveOrOpenBlob(b(f,h),g);else if(d(f))c(f,g,h);else{var i=document.createElement("a");i.href=f,i.target="_blank",setTimeout(function(){e(i)})}}:function(b,d,e,g){if(g=g||open("","_blank"),g&&(g.document.title=g.document.body.innerText="downloading..."),"string"==typeof b)return c(b,d,e);var h="application/octet-stream"===b.type,i=/constructor/i.test(f.HTMLElement)||f.safari,j=/CriOS\/[\d]+/.test(navigator.userAgent);if((j||h&&i||a)&&"undefined"!=typeof FileReader){var k=new FileReader;k.onloadend=function(){var a=k.result;a=j?a:a.replace(/^data:[^;]*;/,"data:attachment/file;"),g?g.location.href=a:location=a,g=null},k.readAsDataURL(b)}else{var l=f.URL||f.webkitURL,m=l.createObjectURL(b);g?g.location=m:location.href=m,g=null,setTimeout(function(){l.revokeObjectURL(m)},4E4)}});f.saveAs=g.saveAs=g, true&&(module.exports=g)});
-
 
 
 /***/ }),
@@ -55021,402 +55008,7 @@ module.exports = function (METHOD_NAME) {
 
 /***/ }),
 
-/***/ 69075:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var global = __webpack_require__(32010);
-var isConstructor = __webpack_require__(20884);
-var tryToString = __webpack_require__(68664);
-
-var TypeError = global.TypeError;
-
-// `Assert: IsConstructor(argument) is true`
-module.exports = function (argument) {
-  if (isConstructor(argument)) return argument;
-  throw TypeError(tryToString(argument) + ' is not a constructor');
-};
-
-
-/***/ }),
-
-/***/ 69330:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-var defineWellKnownSymbol = __webpack_require__(46042);
-
-// `Symbol.iterator` well-known symbol
-// https://tc39.es/ecma262/#sec-symbol.iterator
-defineWellKnownSymbol('iterator');
-
-
-/***/ }),
-
-/***/ 69510:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var uncurryThis = __webpack_require__(38347);
-var toIntegerOrInfinity = __webpack_require__(26882);
-var toString = __webpack_require__(25096);
-var requireObjectCoercible = __webpack_require__(83943);
-
-var charAt = uncurryThis(''.charAt);
-var charCodeAt = uncurryThis(''.charCodeAt);
-var stringSlice = uncurryThis(''.slice);
-
-var createMethod = function (CONVERT_TO_STRING) {
-  return function ($this, pos) {
-    var S = toString(requireObjectCoercible($this));
-    var position = toIntegerOrInfinity(pos);
-    var size = S.length;
-    var first, second;
-    if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
-    first = charCodeAt(S, position);
-    return first < 0xD800 || first > 0xDBFF || position + 1 === size
-      || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF
-        ? CONVERT_TO_STRING
-          ? charAt(S, position)
-          : first
-        : CONVERT_TO_STRING
-          ? stringSlice(S, position, position + 2)
-          : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
-  };
-};
-
-module.exports = {
-  // `String.prototype.codePointAt` method
-  // https://tc39.es/ecma262/#sec-string.prototype.codepointat
-  codeAt: createMethod(false),
-  // `String.prototype.at` method
-  // https://github.com/mathiasbynens/String.prototype.at
-  charAt: createMethod(true)
-};
-
-
-/***/ }),
-
-/***/ 69548:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var global = __webpack_require__(32010);
-var hasOwn = __webpack_require__(20340);
-var isCallable = __webpack_require__(94578);
-var toObject = __webpack_require__(43162);
-var sharedKey = __webpack_require__(82194);
-var CORRECT_PROTOTYPE_GETTER = __webpack_require__(68494);
-
-var IE_PROTO = sharedKey('IE_PROTO');
-var Object = global.Object;
-var ObjectPrototype = Object.prototype;
-
-// `Object.getPrototypeOf` method
-// https://tc39.es/ecma262/#sec-object.getprototypeof
-module.exports = CORRECT_PROTOTYPE_GETTER ? Object.getPrototypeOf : function (O) {
-  var object = toObject(O);
-  if (hasOwn(object, IE_PROTO)) return object[IE_PROTO];
-  var constructor = object.constructor;
-  if (isCallable(constructor) && object instanceof constructor) {
-    return constructor.prototype;
-  } return object instanceof Object ? ObjectPrototype : null;
-};
-
-
-/***/ }),
-
-/***/ 69591:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-/* provided dependency */ var Buffer = __webpack_require__(14598)["Buffer"];
-
-
-__webpack_require__(20731);
-__webpack_require__(14032);
-__webpack_require__(61726);
-__webpack_require__(57114);
-__webpack_require__(46467);
-var iconv;
-try {
-  iconv = __webpack_require__(54171);
-} catch (error) {}
-var DecodeStream = /*#__PURE__*/function () {
-  function DecodeStream(buffer) {
-    this.buffer = buffer;
-    this.pos = 0;
-    this.length = this.buffer.length;
-  }
-  var _proto = DecodeStream.prototype;
-  _proto.readString = function readString(length, encoding) {
-    if (encoding === void 0) {
-      encoding = 'ascii';
-    }
-    switch (encoding) {
-      case 'utf16le':
-      case 'ucs2':
-      case 'utf8':
-      case 'ascii':
-        return this.buffer.toString(encoding, this.pos, this.pos += length);
-      case 'utf16be':
-        var buf = Buffer.from(this.readBuffer(length));
-
-        // swap the bytes
-        for (var i = 0, end = buf.length - 1; i < end; i += 2) {
-          var byte = buf[i];
-          buf[i] = buf[i + 1];
-          buf[i + 1] = byte;
-        }
-        return buf.toString('utf16le');
-      default:
-        buf = this.readBuffer(length);
-        if (iconv) {
-          try {
-            return iconv.decode(buf, encoding);
-          } catch (error1) {}
-        }
-        return buf;
-    }
-  };
-  _proto.readBuffer = function readBuffer(length) {
-    return this.buffer.slice(this.pos, this.pos += length);
-  };
-  _proto.readUInt24BE = function readUInt24BE() {
-    return (this.readUInt16BE() << 8) + this.readUInt8();
-  };
-  _proto.readUInt24LE = function readUInt24LE() {
-    return this.readUInt16LE() + (this.readUInt8() << 16);
-  };
-  _proto.readInt24BE = function readInt24BE() {
-    return (this.readInt16BE() << 8) + this.readUInt8();
-  };
-  _proto.readInt24LE = function readInt24LE() {
-    return this.readUInt16LE() + (this.readInt8() << 16);
-  };
-  return DecodeStream;
-}();
-DecodeStream.TYPES = {
-  UInt8: 1,
-  UInt16: 2,
-  UInt24: 3,
-  UInt32: 4,
-  Int8: 1,
-  Int16: 2,
-  Int24: 3,
-  Int32: 4,
-  Float: 4,
-  Double: 8
-};
-var _loop = function _loop(key) {
-  if (key.slice(0, 4) === 'read') {
-    var bytes = DecodeStream.TYPES[key.replace(/read|[BL]E/g, '')];
-    DecodeStream.prototype[key] = function () {
-      var ret = this.buffer[key](this.pos);
-      this.pos += bytes;
-      return ret;
-    };
-  }
-};
-for (var key in Buffer.prototype) {
-  _loop(key);
-}
-module.exports = DecodeStream;
-
-/***/ }),
-
-/***/ 70091:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var global = __webpack_require__(32010);
-var userAgent = __webpack_require__(40715);
-
-var process = global.process;
-var Deno = global.Deno;
-var versions = process && process.versions || Deno && Deno.version;
-var v8 = versions && versions.v8;
-var match, version;
-
-if (v8) {
-  match = v8.split('.');
-  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
-  // but their correct versions are not interesting for us
-  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
-}
-
-// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
-// so check `userAgent` even if `.v8` exists, but 0
-if (!version && userAgent) {
-  match = userAgent.match(/Edge\/(\d+)/);
-  if (!match || match[1] >= 74) {
-    match = userAgent.match(/Chrome\/(\d+)/);
-    if (match) version = +match[1];
-  }
-}
-
-module.exports = version;
-
-
-/***/ }),
-
-/***/ 70095:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-var $ = __webpack_require__(56475);
-var numberIsFinite = __webpack_require__(59805);
-
-// `Number.isFinite` method
-// https://tc39.es/ecma262/#sec-number.isfinite
-$({ target: 'Number', stat: true }, { isFinite: numberIsFinite });
-
-
-/***/ }),
-
-/***/ 70098:
-/***/ (function(module) {
-
-"use strict";
-
-
-module.exports = {
-	'4A0': [4767.87, 6740.79],
-	'2A0': [3370.39, 4767.87],
-	A0: [2383.94, 3370.39],
-	A1: [1683.78, 2383.94],
-	A2: [1190.55, 1683.78],
-	A3: [841.89, 1190.55],
-	A4: [595.28, 841.89],
-	A5: [419.53, 595.28],
-	A6: [297.64, 419.53],
-	A7: [209.76, 297.64],
-	A8: [147.40, 209.76],
-	A9: [104.88, 147.40],
-	A10: [73.70, 104.88],
-	B0: [2834.65, 4008.19],
-	B1: [2004.09, 2834.65],
-	B2: [1417.32, 2004.09],
-	B3: [1000.63, 1417.32],
-	B4: [708.66, 1000.63],
-	B5: [498.90, 708.66],
-	B6: [354.33, 498.90],
-	B7: [249.45, 354.33],
-	B8: [175.75, 249.45],
-	B9: [124.72, 175.75],
-	B10: [87.87, 124.72],
-	C0: [2599.37, 3676.54],
-	C1: [1836.85, 2599.37],
-	C2: [1298.27, 1836.85],
-	C3: [918.43, 1298.27],
-	C4: [649.13, 918.43],
-	C5: [459.21, 649.13],
-	C6: [323.15, 459.21],
-	C7: [229.61, 323.15],
-	C8: [161.57, 229.61],
-	C9: [113.39, 161.57],
-	C10: [79.37, 113.39],
-	RA0: [2437.80, 3458.27],
-	RA1: [1729.13, 2437.80],
-	RA2: [1218.90, 1729.13],
-	RA3: [864.57, 1218.90],
-	RA4: [609.45, 864.57],
-	SRA0: [2551.18, 3628.35],
-	SRA1: [1814.17, 2551.18],
-	SRA2: [1275.59, 1814.17],
-	SRA3: [907.09, 1275.59],
-	SRA4: [637.80, 907.09],
-	EXECUTIVE: [521.86, 756.00],
-	FOLIO: [612.00, 936.00],
-	LEGAL: [612.00, 1008.00],
-	LETTER: [612.00, 792.00],
-	TABLOID: [792.00, 1224.00]
-};
-
-
-/***/ }),
-
-/***/ 70172:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var NATIVE_WEAK_MAP = __webpack_require__(26168);
-var global = __webpack_require__(32010);
-var uncurryThis = __webpack_require__(38347);
-var isObject = __webpack_require__(24517);
-var createNonEnumerableProperty = __webpack_require__(48914);
-var hasOwn = __webpack_require__(20340);
-var shared = __webpack_require__(55480);
-var sharedKey = __webpack_require__(82194);
-var hiddenKeys = __webpack_require__(90682);
-
-var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
-var TypeError = global.TypeError;
-var WeakMap = global.WeakMap;
-var set, get, has;
-
-var enforce = function (it) {
-  return has(it) ? get(it) : set(it, {});
-};
-
-var getterFor = function (TYPE) {
-  return function (it) {
-    var state;
-    if (!isObject(it) || (state = get(it)).type !== TYPE) {
-      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
-    } return state;
-  };
-};
-
-if (NATIVE_WEAK_MAP || shared.state) {
-  var store = shared.state || (shared.state = new WeakMap());
-  var wmget = uncurryThis(store.get);
-  var wmhas = uncurryThis(store.has);
-  var wmset = uncurryThis(store.set);
-  set = function (it, metadata) {
-    if (wmhas(store, it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
-    metadata.facade = it;
-    wmset(store, it, metadata);
-    return metadata;
-  };
-  get = function (it) {
-    return wmget(store, it) || {};
-  };
-  has = function (it) {
-    return wmhas(store, it);
-  };
-} else {
-  var STATE = sharedKey('state');
-  hiddenKeys[STATE] = true;
-  set = function (it, metadata) {
-    if (hasOwn(it, STATE)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
-    metadata.facade = it;
-    createNonEnumerableProperty(it, STATE, metadata);
-    return metadata;
-  };
-  get = function (it) {
-    return hasOwn(it, STATE) ? it[STATE] : {};
-  };
-  has = function (it) {
-    return hasOwn(it, STATE);
-  };
-}
-
-module.exports = {
-  set: set,
-  get: get,
-  has: has,
-  enforce: enforce,
-  getterFor: getterFor
-};
-
-
-/***/ }),
-
-/***/ 70176:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-var uncurryThis = __webpack_require__(38347);
-
-module.exports = uncurryThis({}.isPrototypeOf);
-
-
-/***/ }),
-
-/***/ 70282:
+/***/ 69013:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -61448,6 +61040,414 @@ mixin(AttachmentsMixin);
 mixin(SubsetMixin);
 PDFDocument.LineWrapper = LineWrapper;
 var _default = exports["default"] = PDFDocument;
+
+/***/ }),
+
+/***/ 69075:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(32010);
+var isConstructor = __webpack_require__(20884);
+var tryToString = __webpack_require__(68664);
+
+var TypeError = global.TypeError;
+
+// `Assert: IsConstructor(argument) is true`
+module.exports = function (argument) {
+  if (isConstructor(argument)) return argument;
+  throw TypeError(tryToString(argument) + ' is not a constructor');
+};
+
+
+/***/ }),
+
+/***/ 69330:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+var defineWellKnownSymbol = __webpack_require__(46042);
+
+// `Symbol.iterator` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.iterator
+defineWellKnownSymbol('iterator');
+
+
+/***/ }),
+
+/***/ 69510:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__(38347);
+var toIntegerOrInfinity = __webpack_require__(26882);
+var toString = __webpack_require__(25096);
+var requireObjectCoercible = __webpack_require__(83943);
+
+var charAt = uncurryThis(''.charAt);
+var charCodeAt = uncurryThis(''.charCodeAt);
+var stringSlice = uncurryThis(''.slice);
+
+var createMethod = function (CONVERT_TO_STRING) {
+  return function ($this, pos) {
+    var S = toString(requireObjectCoercible($this));
+    var position = toIntegerOrInfinity(pos);
+    var size = S.length;
+    var first, second;
+    if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
+    first = charCodeAt(S, position);
+    return first < 0xD800 || first > 0xDBFF || position + 1 === size
+      || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF
+        ? CONVERT_TO_STRING
+          ? charAt(S, position)
+          : first
+        : CONVERT_TO_STRING
+          ? stringSlice(S, position, position + 2)
+          : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+  };
+};
+
+module.exports = {
+  // `String.prototype.codePointAt` method
+  // https://tc39.es/ecma262/#sec-string.prototype.codepointat
+  codeAt: createMethod(false),
+  // `String.prototype.at` method
+  // https://github.com/mathiasbynens/String.prototype.at
+  charAt: createMethod(true)
+};
+
+
+/***/ }),
+
+/***/ 69548:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(32010);
+var hasOwn = __webpack_require__(20340);
+var isCallable = __webpack_require__(94578);
+var toObject = __webpack_require__(43162);
+var sharedKey = __webpack_require__(82194);
+var CORRECT_PROTOTYPE_GETTER = __webpack_require__(68494);
+
+var IE_PROTO = sharedKey('IE_PROTO');
+var Object = global.Object;
+var ObjectPrototype = Object.prototype;
+
+// `Object.getPrototypeOf` method
+// https://tc39.es/ecma262/#sec-object.getprototypeof
+module.exports = CORRECT_PROTOTYPE_GETTER ? Object.getPrototypeOf : function (O) {
+  var object = toObject(O);
+  if (hasOwn(object, IE_PROTO)) return object[IE_PROTO];
+  var constructor = object.constructor;
+  if (isCallable(constructor) && object instanceof constructor) {
+    return constructor.prototype;
+  } return object instanceof Object ? ObjectPrototype : null;
+};
+
+
+/***/ }),
+
+/***/ 69591:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+/* provided dependency */ var Buffer = __webpack_require__(14598)["Buffer"];
+
+
+__webpack_require__(20731);
+__webpack_require__(14032);
+__webpack_require__(61726);
+__webpack_require__(57114);
+__webpack_require__(46467);
+var iconv;
+try {
+  iconv = __webpack_require__(54171);
+} catch (error) {}
+var DecodeStream = /*#__PURE__*/function () {
+  function DecodeStream(buffer) {
+    this.buffer = buffer;
+    this.pos = 0;
+    this.length = this.buffer.length;
+  }
+  var _proto = DecodeStream.prototype;
+  _proto.readString = function readString(length, encoding) {
+    if (encoding === void 0) {
+      encoding = 'ascii';
+    }
+    switch (encoding) {
+      case 'utf16le':
+      case 'ucs2':
+      case 'utf8':
+      case 'ascii':
+        return this.buffer.toString(encoding, this.pos, this.pos += length);
+      case 'utf16be':
+        var buf = Buffer.from(this.readBuffer(length));
+
+        // swap the bytes
+        for (var i = 0, end = buf.length - 1; i < end; i += 2) {
+          var byte = buf[i];
+          buf[i] = buf[i + 1];
+          buf[i + 1] = byte;
+        }
+        return buf.toString('utf16le');
+      default:
+        buf = this.readBuffer(length);
+        if (iconv) {
+          try {
+            return iconv.decode(buf, encoding);
+          } catch (error1) {}
+        }
+        return buf;
+    }
+  };
+  _proto.readBuffer = function readBuffer(length) {
+    return this.buffer.slice(this.pos, this.pos += length);
+  };
+  _proto.readUInt24BE = function readUInt24BE() {
+    return (this.readUInt16BE() << 8) + this.readUInt8();
+  };
+  _proto.readUInt24LE = function readUInt24LE() {
+    return this.readUInt16LE() + (this.readUInt8() << 16);
+  };
+  _proto.readInt24BE = function readInt24BE() {
+    return (this.readInt16BE() << 8) + this.readUInt8();
+  };
+  _proto.readInt24LE = function readInt24LE() {
+    return this.readUInt16LE() + (this.readInt8() << 16);
+  };
+  return DecodeStream;
+}();
+DecodeStream.TYPES = {
+  UInt8: 1,
+  UInt16: 2,
+  UInt24: 3,
+  UInt32: 4,
+  Int8: 1,
+  Int16: 2,
+  Int24: 3,
+  Int32: 4,
+  Float: 4,
+  Double: 8
+};
+var _loop = function _loop(key) {
+  if (key.slice(0, 4) === 'read') {
+    var bytes = DecodeStream.TYPES[key.replace(/read|[BL]E/g, '')];
+    DecodeStream.prototype[key] = function () {
+      var ret = this.buffer[key](this.pos);
+      this.pos += bytes;
+      return ret;
+    };
+  }
+};
+for (var key in Buffer.prototype) {
+  _loop(key);
+}
+module.exports = DecodeStream;
+
+/***/ }),
+
+/***/ 70091:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var global = __webpack_require__(32010);
+var userAgent = __webpack_require__(40715);
+
+var process = global.process;
+var Deno = global.Deno;
+var versions = process && process.versions || Deno && Deno.version;
+var v8 = versions && versions.v8;
+var match, version;
+
+if (v8) {
+  match = v8.split('.');
+  // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+  // but their correct versions are not interesting for us
+  version = match[0] > 0 && match[0] < 4 ? 1 : +(match[0] + match[1]);
+}
+
+// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+// so check `userAgent` even if `.v8` exists, but 0
+if (!version && userAgent) {
+  match = userAgent.match(/Edge\/(\d+)/);
+  if (!match || match[1] >= 74) {
+    match = userAgent.match(/Chrome\/(\d+)/);
+    if (match) version = +match[1];
+  }
+}
+
+module.exports = version;
+
+
+/***/ }),
+
+/***/ 70095:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+var $ = __webpack_require__(56475);
+var numberIsFinite = __webpack_require__(59805);
+
+// `Number.isFinite` method
+// https://tc39.es/ecma262/#sec-number.isfinite
+$({ target: 'Number', stat: true }, { isFinite: numberIsFinite });
+
+
+/***/ }),
+
+/***/ 70098:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = {
+	'4A0': [4767.87, 6740.79],
+	'2A0': [3370.39, 4767.87],
+	A0: [2383.94, 3370.39],
+	A1: [1683.78, 2383.94],
+	A2: [1190.55, 1683.78],
+	A3: [841.89, 1190.55],
+	A4: [595.28, 841.89],
+	A5: [419.53, 595.28],
+	A6: [297.64, 419.53],
+	A7: [209.76, 297.64],
+	A8: [147.40, 209.76],
+	A9: [104.88, 147.40],
+	A10: [73.70, 104.88],
+	B0: [2834.65, 4008.19],
+	B1: [2004.09, 2834.65],
+	B2: [1417.32, 2004.09],
+	B3: [1000.63, 1417.32],
+	B4: [708.66, 1000.63],
+	B5: [498.90, 708.66],
+	B6: [354.33, 498.90],
+	B7: [249.45, 354.33],
+	B8: [175.75, 249.45],
+	B9: [124.72, 175.75],
+	B10: [87.87, 124.72],
+	C0: [2599.37, 3676.54],
+	C1: [1836.85, 2599.37],
+	C2: [1298.27, 1836.85],
+	C3: [918.43, 1298.27],
+	C4: [649.13, 918.43],
+	C5: [459.21, 649.13],
+	C6: [323.15, 459.21],
+	C7: [229.61, 323.15],
+	C8: [161.57, 229.61],
+	C9: [113.39, 161.57],
+	C10: [79.37, 113.39],
+	RA0: [2437.80, 3458.27],
+	RA1: [1729.13, 2437.80],
+	RA2: [1218.90, 1729.13],
+	RA3: [864.57, 1218.90],
+	RA4: [609.45, 864.57],
+	SRA0: [2551.18, 3628.35],
+	SRA1: [1814.17, 2551.18],
+	SRA2: [1275.59, 1814.17],
+	SRA3: [907.09, 1275.59],
+	SRA4: [637.80, 907.09],
+	EXECUTIVE: [521.86, 756.00],
+	FOLIO: [612.00, 936.00],
+	LEGAL: [612.00, 1008.00],
+	LETTER: [612.00, 792.00],
+	TABLOID: [792.00, 1224.00]
+};
+
+
+/***/ }),
+
+/***/ 70172:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var NATIVE_WEAK_MAP = __webpack_require__(26168);
+var global = __webpack_require__(32010);
+var uncurryThis = __webpack_require__(38347);
+var isObject = __webpack_require__(24517);
+var createNonEnumerableProperty = __webpack_require__(48914);
+var hasOwn = __webpack_require__(20340);
+var shared = __webpack_require__(55480);
+var sharedKey = __webpack_require__(82194);
+var hiddenKeys = __webpack_require__(90682);
+
+var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
+var TypeError = global.TypeError;
+var WeakMap = global.WeakMap;
+var set, get, has;
+
+var enforce = function (it) {
+  return has(it) ? get(it) : set(it, {});
+};
+
+var getterFor = function (TYPE) {
+  return function (it) {
+    var state;
+    if (!isObject(it) || (state = get(it)).type !== TYPE) {
+      throw TypeError('Incompatible receiver, ' + TYPE + ' required');
+    } return state;
+  };
+};
+
+if (NATIVE_WEAK_MAP || shared.state) {
+  var store = shared.state || (shared.state = new WeakMap());
+  var wmget = uncurryThis(store.get);
+  var wmhas = uncurryThis(store.has);
+  var wmset = uncurryThis(store.set);
+  set = function (it, metadata) {
+    if (wmhas(store, it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    wmset(store, it, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return wmget(store, it) || {};
+  };
+  has = function (it) {
+    return wmhas(store, it);
+  };
+} else {
+  var STATE = sharedKey('state');
+  hiddenKeys[STATE] = true;
+  set = function (it, metadata) {
+    if (hasOwn(it, STATE)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+    metadata.facade = it;
+    createNonEnumerableProperty(it, STATE, metadata);
+    return metadata;
+  };
+  get = function (it) {
+    return hasOwn(it, STATE) ? it[STATE] : {};
+  };
+  has = function (it) {
+    return hasOwn(it, STATE);
+  };
+}
+
+module.exports = {
+  set: set,
+  get: get,
+  has: has,
+  enforce: enforce,
+  getterFor: getterFor
+};
+
+
+/***/ }),
+
+/***/ 70176:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var uncurryThis = __webpack_require__(38347);
+
+module.exports = uncurryThis({}.isPrototypeOf);
+
+
+/***/ }),
+
+/***/ 70206:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else // removed by dead control flow
+{}})(this,function(){"use strict";function b(a,b){return"undefined"==typeof b?b={autoBom:!1}:"object"!=typeof b&&(console.warn("Deprecated: Expected third argument to be a object"),b={autoBom:!b}),b.autoBom&&/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a.type)?new Blob(["\uFEFF",a],{type:a.type}):a}function c(a,b,c){var d=new XMLHttpRequest;d.open("GET",a),d.responseType="blob",d.onload=function(){g(d.response,b,c)},d.onerror=function(){console.error("could not download file")},d.send()}function d(a){var b=new XMLHttpRequest;b.open("HEAD",a,!1);try{b.send()}catch(a){}return 200<=b.status&&299>=b.status}function e(a){try{a.dispatchEvent(new MouseEvent("click"))}catch(c){var b=document.createEvent("MouseEvents");b.initMouseEvent("click",!0,!0,window,0,0,0,80,20,!1,!1,!1,!1,0,null),a.dispatchEvent(b)}}var f="object"==typeof window&&window.window===window?window:"object"==typeof self&&self.self===self?self:"object"==typeof __webpack_require__.g&&__webpack_require__.g.global===__webpack_require__.g?__webpack_require__.g:void 0,a=f.navigator&&/Macintosh/.test(navigator.userAgent)&&/AppleWebKit/.test(navigator.userAgent)&&!/Safari/.test(navigator.userAgent),g=f.saveAs||("object"!=typeof window||window!==f?function(){}:(typeof HTMLAnchorElement !== "undefined" && "download" in HTMLAnchorElement.prototype)&&!a?function(b,g,h){var i=f.URL||f.webkitURL,j=document.createElement("a");g=g||b.name||"download",j.download=g,j.rel="noopener","string"==typeof b?(j.href=b,j.origin===location.origin?e(j):d(j.href)?c(b,g,h):e(j,j.target="_blank")):(j.href=i.createObjectURL(b),setTimeout(function(){i.revokeObjectURL(j.href)},4E4),setTimeout(function(){e(j)},0))}:"msSaveOrOpenBlob"in navigator?function(f,g,h){if(g=g||f.name||"download","string"!=typeof f)navigator.msSaveOrOpenBlob(b(f,h),g);else if(d(f))c(f,g,h);else{var i=document.createElement("a");i.href=f,i.target="_blank",setTimeout(function(){e(i)})}}:function(b,d,e,g){if(g=g||open("","_blank"),g&&(g.document.title=g.document.body.innerText="downloading..."),"string"==typeof b)return c(b,d,e);var h="application/octet-stream"===b.type,i=/constructor/i.test(f.HTMLElement)||f.safari,j=/CriOS\/[\d]+/.test(navigator.userAgent);if((j||h&&i||a)&&"undefined"!=typeof FileReader){var k=new FileReader;k.onloadend=function(){var a=k.result;a=j?a:a.replace(/^data:[^;]*;/,"data:attachment/file;"),g?g.location.href=a:location=a,g=null},k.readAsDataURL(b)}else{var l=f.URL||f.webkitURL,m=l.createObjectURL(b);g?g.location=m:location.href=m,g=null,setTimeout(function(){l.revokeObjectURL(m)},4E4)}});f.saveAs=g.saveAs=g, true&&(module.exports=g)});
+
+
 
 /***/ }),
 
@@ -69571,7 +69571,7 @@ function _interopDefault(ex) {
 	return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex;
 }
 
-var PdfKit = _interopDefault(__webpack_require__(70282));
+var PdfKit = _interopDefault(__webpack_require__(69013));
 
 function getEngineInstance() {
 	return PdfKit;
