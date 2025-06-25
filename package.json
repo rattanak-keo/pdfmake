@@ -69,7 +69,13 @@
     "pdf",
     "javascript",
     "printing",
-    "layout"
+    "layout",
+    "khmer",
+    "cambodian",
+    "text-decoration",
+    "pdfmake",
+    "pdfmake-kh",
+    "pdfmake-khmer"
   ],
   "author": "Bartek Pampuch <bartosz.pampuch@gmail.com>",
   "license": "MIT",
