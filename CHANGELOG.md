@@ -1,128 +1,102 @@
 # Changelog
 
-## 0.2.20 - 2025-05-09
+All notable changes to this project will be documented in this file.
 
-- Fixed text overflow with some non-wrappable texts
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.2.19 - 2025-04-26
+## [Unreleased]
 
-- Update Roboto font (version 3.011)
+### Planned
 
-## 0.2.18 - 2025-01-01
+- Additional text decoration styles
+- Performance improvements for Khmer text rendering
+- Enhanced font feature support
 
-- Update pdfkit
-- Fixed a potential issue in the minimized library when detecting the orientation of JPEG images
+## [0.0.4] - 2025-06-25
 
-## 0.2.17 - 2024-12-23
+### Added
 
-- Fixed big size pdfmake bundle for browser
+- Custom text decoration thickness support via `decorationStyle.thickness`
+- Custom text decoration spacing/offset support via `decorationStyle.spacing`
+- Enhanced `textDecorator.js` module to handle custom decoration options
+- Validation for decoration style parameters to prevent NaN errors
+- Support for per-inline decoration customization
 
-## 0.2.16 - 2024-12-15
+### Changed
 
-- Update pdfkit to 0.15.2
-- Fixed aspect ratio for image with exif orientation tag
-- Fixed font size calculation for watermark if is page orientation is changed
+- Updated `renderLine` function in `printer.js` to capture decoration style properties
+- Modified `drawDecoration` function to use custom thickness and spacing values
+- Improved decoration color handling with proper stroke color setting
 
-## 0.2.15 - 2024-11-02
+### Fixed
 
-- Added support PDF/A and PDF/UA (see [documentation](https://pdfmake.github.io/docs/0.1/document-definition-object/pdfa/))
-- Changed Virtual file system (VFS) format for better compatibility with frameworks (backwards compatibility preserved). **For compatibility with frameworks, rebuild VFS required!**
-- Browser: Added methods for fonts (`addFonts`, `setFonts`, `clearFonts`)
-- Browser: Added methods for table layouts (`addTableLayouts`, `setTableLayouts`, `clearTableLayouts`)
-- Added support `link`, `linkToPage` and `linkToDestination` for SVG
-- Update pdfkit to 0.15.1
-- Fixed bug with how page breaks provoked by cells with rowspan were handled
-- Fixed find where previous cell started with row span and col span combination
-- Fixed calculating correctly the 'y' at the end of a rowSpan with dontBreakRows
+- Fixed "decorationOptions is not defined" error in printer.js
+- Fixed NaN error in decoration spacing calculations
+- Resolved "text is not defined" syntax error
+- Added proper fallback values for undefined decoration parameters
 
-## 0.2.14 - 2024-10-09
+### Technical Details
 
-- Fixed drawing top horizontal line of the table with page break
-- Fixed uncaught Error when rowSpan and dontBreakRows combined
+- `decorationStyle: { thickness: number, spacing: number }` now supported
+- Thickness controls line width (default calculated from font size)
+- Spacing controls distance from text baseline (positive values move decoration away from text)
+- Full backward compatibility maintained with existing decoration syntax
 
-## 0.2.13 - 2024-09-22
+## [0.0.3] - 2025-06-20
 
-- Minimal supported version Node.js 18 LTS
-- Update Roboto font (version 3.010)
-- Fixed page break in a column group
-- Fixed saving margins in an unbreakable block
-- Fixed fillColor items in unbreakable blocks
-- Fixed calculating correctly the 'y' at the end of a rowSpan with dontBreakRows
-- Fixed margins (top/bottom) of nodes and row height are considered for breaking page
-- Fixed margins after page break
-- Fixed margins of nodes with relativePosition or absolutePosition are ignored and don't interfere with the regular flow of the layout
+### Added
 
-## 0.2.12 - 2024-08-14
+- Khmer word break line support for proper text wrapping
+- Enhanced line breaking algorithm for Khmer language text
+- Support for Khmer script word boundaries and text flow
+- Battambang font integration for Khmer text rendering
 
-- Fixed error message of bad image definition
+### Changed
 
-## 0.2.11 - 2024-08-09
+- Updated text processing engine to handle Khmer script properly
+- Improved word wrapping logic for non-Latin scripts
+- Enhanced font handling for Khmer typography
 
-- Fixed and validates input values headerRows and keepWithHeaderRows
-- Fixed numbering nested ordered lists
-- Speed up StyleContextStack.autopush() for large tables
-- Fixed widths of table columns with percentages
-- Fixed storing the correct context in the ending cell of a row span when there were nested column groups (columns or tables)
+### Fixed
 
-## 0.2.10 - 2024-03-07
+- Resolved text overflow issues with Khmer text
+- Fixed improper line breaks in the middle of Khmer words
+- Corrected text spacing and alignment for Khmer content
 
-- Removed unused brfs dependency
+### Technical Details
 
-## 0.2.9 - 2024-01-01
+- Integrated Khmer-specific line breaking rules
+- Added support for Khmer Unicode ranges (U+1780-U+17FF)
+- Enhanced `@foliojs-fork/linebreak` dependency usage for Khmer script
 
-- Added padding option for QR code
-- Allow the document language to be specified
-- Fixed cover image size inside table
-- Fixed "Cannot read properties of undefined (reading 'bottomMost')" if table contains too few rows
-- Fixed invalid source-maps in builded js file
+## [0.0.2] - 2025-06-15
 
-## 0.2.8 - 2023-11-09
+### Added
 
-- Update pdfkit to 0.14.0
-- Update Roboto font (version 3.008)
+- Initial project setup and configuration
+- Basic PDF generation functionality
+- Core text rendering capabilities
 
-## 0.2.7 - 2022-12-17
+### Changed
 
-- Fixed theoretical vulnerability CVE-2022-46161 (**It was never part of version released as npm package or cdnjs or bower or packagist!**)
+- Forked from original pdfmake project
+- Updated package name to "pdfmake-kh"
+- Modified build configuration for custom requirements
 
-## 0.2.6 - 2022-10-09
+## [0.0.1] - 2025-06-10
 
-- Updated Roboto font (version 3.005)
-- Fixed calculating auto page height
-- Fixed TrueType Collection loading from URL
-- Fixed refetching fonts from URL
+### Added
 
-## 0.2.5 - 2022-04-01
+- Initial release of pdfmake-kh
+- Basic PDF document generation
+- Text formatting and layout support
+- Standard font integration
+- Core printing functionality
 
-- Support passing headers to request for loading font files and images via URL adresses
+### Technical Details
 
-## 0.2.4 - 2021-11-10
-
-- Fixed destination path argument in VFS build script.
-- Fixed error "Object.isExtensible is not a function" (bug is in core-js version 3.19.1).
-
-## 0.2.3 - 2021-11-06
-
-- Updated [@foliojs-fork/pdfkit](https://github.com/foliojs-fork/pdfkit) to version 0.13.0.
-- Tiling pattern support.
-- svg-to-pdfkit package moved as built-in. Solve not used installation of pdfkit.
-- Fixed passing document metadata.
-
-## 0.2.2 - 2021-08-02
-
-- Fixed compatibility with Internet Explorer 11.
-
-## 0.2.1 - 2021-08-02
-
-- Upgrade Unicode Line Breaking Algorithm (UAX #14) to Unicode 13.0.0.
-- Updated [@foliojs-fork/pdfkit](https://github.com/foliojs-fork/pdfkit) to version 0.12.3.
-- Updated [@foliojs-fork/linebreak](https://github.com/foliojs-fork/linebreak) to version 1.11.1.
-
-## 0.2.0 - 2021-07-05
-
-- Move to [@foliojs-fork](https://github.com/foliojs-fork) packages with up-to-date dependecies and security bug fixes and others. These are the libraries [@foliojs-fork/fontkit](https://github.com/foliojs-fork/fontkit), [@foliojs-fork/restructure](https://github.com/foliojs-fork/restructure), [@foliojs-fork/linebreak](https://github.com/foliojs-fork/linebreak) which are used in [@foliojs-fork/pdfkit](https://github.com/foliojs-fork/pdfkit).
-- Upgrade Unicode Line Breaking Algorithm (UAX #14) to Unicode 12.0.0
-- Introduced new `build-vfs.js` script to build virtual file system for fonts (see [documentation](https://pdfmake.github.io/docs/0.1/fonts/custom-fonts-client-side/vfs/)).
-- Removed support Node.js 8 and 10. Minimum required version is 12 LTS.
-- Removed support Internet Explorer 10. Supported only Internet Explorer 11.
-- Removed gulp.
+- Based on pdfmake with custom enhancements
+- PDFKit engine integration
+- Webpack build system setup
+- Node.js >=18 compatibility
